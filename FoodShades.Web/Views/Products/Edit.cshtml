@@ -1,0 +1,81 @@
+﻿@using FoodShades.Web.Models.Enums;
+@model FoodShades.Web.ViewModels.ProductViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Product</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit"  method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ProductId" />
+            <div class="form-group">
+                <label asp-for="ProductName" class="control-label"></label>
+                <input asp-for="ProductName" class="form-control" />
+                <span asp-validation-for="ProductName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductDescription" class="control-label"></label>
+                <input asp-for="ProductDescription" class="form-control" />
+                <span asp-validation-for="ProductDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UnitOfMeasure" class="control-label"></label>
+                <input asp-for="UnitOfMeasure" class="form-control" />
+                <span asp-validation-for="UnitOfMeasure" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Size" class="control-label"></label>
+                <select asp-for="Size" class="form-control"></select>
+                <span asp-validation-for="Size" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="ProductImageFileUrl" class="control-label"></label>
+                <input asp-for="ProductImageFileUrl" class="form-control" />
+                <span asp-validation-for="ProductImageFileUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductImageContentType" class="control-label"></label>
+                <input asp-for="ProductImageContentType" class="form-control" />
+                <span asp-validation-for="ProductImageContentType" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="Photo" style="width: 100%;"></label>
+                <img id="profilePicture" src=""
+                     style="width: 350px; height: 350px; object-fit: cover; border: 1px solid #808080;" />
+                <input type="file" asp-for="Photo"
+                       accept=".png,.jpg,.jpeg,.gif,.tif"
+                       class="form-control"
+                       style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
+                       onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
+                <span asp-validation-for="Photo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
