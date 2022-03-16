@@ -1,14 +1,17 @@
 using FoodShades.Web.Data;
 using FoodShades.Web.Models;
+using FoodShades.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +21,12 @@ namespace FoodShades.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IConfiguration _configuration { get; }
+        public readonly IHostEnvironment _hostEnvironment;
+        public Startup(IConfiguration configuration, IHostEnvironment hostEnvironment)
         {
             Configuration = configuration;
+            _hostEnvironment = hostEnvironment;
         }
 
         public IConfiguration Configuration { get; }
@@ -66,10 +72,17 @@ namespace FoodShades.Web
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //  .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
+
+            services
+                .AddSingleton<IEmailSender, MyEmailSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app,
+            IWebHostEnvironment env,
+            ILogger<Startup> logger,
+            UserManager<MyIdentityUser> userManager,
+            RoleManager<MyIdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -102,6 +115,10 @@ namespace FoodShades.Web
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
+
+            ApplicationDbContextSeed.SeedIdentityRolesAsync(roleManager).Wait();
+            ApplicationDbContextSeed.SeedIdentityUserAsync(userManager).Wait();
+
         }
     }
 }

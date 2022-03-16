@@ -13,10 +13,11 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FoodShades.Web.Controllers
 {
-   
+    [Authorize(Roles = "Administrator,Manager")]
     public class ProductsController : Controller
     {
         private const string BlobContainerNAME = "productimages";

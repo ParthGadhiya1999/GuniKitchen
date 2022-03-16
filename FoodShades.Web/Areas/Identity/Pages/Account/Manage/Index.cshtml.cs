@@ -70,7 +70,7 @@ namespace FoodShades.Web.Areas.Identity.Pages.Account.Manage
                 DisplayName = Input.DisplayName,
                 DateOfBirth = Input.DateOfBirth,
                 IdAdminUser = Input.IdAdminUser,
-                Gender = Input.Gender
+                Gender = Input.Gender,
             };
         }
 

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FoodShades.Web.Data;
 using FoodShades.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FoodShades.Web.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;

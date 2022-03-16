@@ -19,16 +19,17 @@ using Microsoft.Extensions.Hosting;
 
 namespace FoodShades.Web.Areas.Identity.Pages.Account
 {
-    [AllowAnonymous]
-    public class RegisterModel : PageModel
+    [Authorize(Roles = "Administrator")]
+    public class RegisterManagerModel : PageModel
     {
+        private const string StandardPASSWORD = "P@ssword123";
         private readonly SignInManager<MyIdentityUser> _signInManager;
         private readonly UserManager<MyIdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         public readonly IHostEnvironment _hostEnvironment;
 
-        public RegisterModel(
+        public RegisterManagerModel(
             UserManager<MyIdentityUser> userManager,
             SignInManager<MyIdentityUser> signInManager,
             ILogger<RegisterModel> logger,
@@ -54,17 +55,6 @@ namespace FoodShades.Web.Areas.Identity.Pages.Account
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-            [DataType(DataType.Password)]
-            [Display(Name = "Password")]
-            public string Password { get; set; }
-
-            [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; }
-
             [Display(Name = "Mobile No.")]
             [Required(ErrorMessage = "{0} it not empty")]
             [MaxLength(10)]
@@ -83,10 +73,7 @@ namespace FoodShades.Web.Areas.Identity.Pages.Account
             [Display(Name = "Gender")]
             [Required(ErrorMessage ="Please indiacte which of theese best decribe your genders")]
             public MyIdentityGenders Gender { get; set; }
-
-            [Display(Name = "Is Admin User?")]
-            [Required]
-            public bool IdAdminUser { get; set; } = false;
+            
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -106,15 +93,15 @@ namespace FoodShades.Web.Areas.Identity.Pages.Account
                     Email = Input.Email,
                     DisplayName = Input.DisplayName,
                     DateOfBirth = Input.DateOfBirth,
-                    IdAdminUser = Input.IdAdminUser,
+                    IdAdminUser = true,
                     Gender = Input.Gender,
-                    MobileNo = Input.MobileNo,
+                    MobileNo = Input.MobileNo
                 };
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                var result = await _userManager.CreateAsync(user, StandardPASSWORD);
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRolesAsync(user, new string[] {
-                        MyIdentityRoleNames.Customer.ToString()
+                        MyIdentityRoleNames.Manager.ToString()
                     });
 
                     _logger.LogInformation("User created a new account with password.");
