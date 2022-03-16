@@ -34,11 +34,11 @@
                 <input asp-for="UnitOfMeasure" class="form-control" />
                 <span asp-validation-for="UnitOfMeasure" class="text-danger"></span>
             </div>
-            <div class="form-group">
+           @* <div class="form-group">
                 <label asp-for="Size" class="control-label"></label>
                 <select asp-for="Size" class="form-control"></select>
                 <span asp-validation-for="Size" class="text-danger"></span>
-            </div>
+            </div>*@
             @*<div class="form-group">
                 <label asp-for="ProductImageFileUrl" class="control-label"></label>
                 <input asp-for="ProductImageFileUrl" class="form-control" />
@@ -50,9 +50,23 @@
                 <span asp-validation-for="ProductImageContentType" class="text-danger"></span>
             </div>*@
             <div class="form-group">
+                <label asp-for="Size" class="control-label"></label>
+                <select asp-for="Size" class="form-control" 
+                        asp-items="Html.GetEnumSelectList<ProductSizes>()"></select>
+                <span asp-validation-for="Size" class="text-danger"></span>
+            </div>  
+            <div class="form-group">
                 <label asp-for="Photo" style="width: 100%;"></label>
-                <img id="profilePicture" src=""
+                @if (string.IsNullOrEmpty(ViewBag.ProductImageFileUrl))
+                {
+                    <img id="profilePicture" src=""
                      style="width: 350px; height: 350px; object-fit: cover; border: 1px solid #808080;" />
+                }
+                else
+                {
+                     <img id="profilePicture" src="@ViewBag.ProductImageFilrUrl"
+                     style="width: 350px; height: 350px; object-fit: cover; border: 1px solid #808080;" />
+                }
                 <input type="file" asp-for="Photo"
                        accept=".png,.jpg,.jpeg,.gif,.tif"
                        class="form-control"

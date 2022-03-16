@@ -9,7 +9,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+@*<table class="table">
     <thead>
         <tr>
             <th>
@@ -74,4 +74,28 @@
         </tr>
 }
     </tbody>
-</table>
+</table>*@
+<div class="card-columns">
+    @foreach (var item in Model)
+    {
+        <div class="card bg-light">
+            <div class="font-weight-bold text-center" 
+                 style="border-bottom: 2px dashed #ccc; width: 80%; margin: 0 auto; padding:10px;">
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+            </div>
+            <div style="max-width:390px;">
+                <img src="@item.ProductImageFileUrl" class="img-fluid rounded card-img-top" />
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">@Html.DisplayFor(modelItem => item.ProductName)</h4>
+                <p class="card-text">@Html.DisplayFor(modelItem => item.ProductDescription)</p>
+                <h5 class="card-text text-center">@item.Price.ToString("$ 0.00")</h5>
+            </div>
+            <div class="card-footer text-right">
+                <a class="btn btn-sm btn-outline-primary" asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> 
+                <a class="btn btn-sm btn-outline-primary" asp-action="Details" asp-route-id="@item.ProductId">Details</a> 
+                <a class="btn btn-sm btn-outline-primary" asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+            </div>
+        </div>
+    }
+</div>
