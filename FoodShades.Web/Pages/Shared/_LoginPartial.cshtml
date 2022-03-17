@@ -12,7 +12,7 @@
 @if (SignInManager.IsSignedIn(User) && user!=null)
 {
     <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @user.DisplayName</a>
     </li>
 
     @if (await _userManager.IsInRoleAsync(user, MyIdentityRoleNames.Administrator.ToString()))
